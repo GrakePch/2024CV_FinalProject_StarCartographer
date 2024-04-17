@@ -9,5 +9,7 @@
         "om4": null,
         "om5": null,
         "om6": 0
-    }
+    },
+    "useCenter": [1920, 1080],
+    "useRadius": 1200
 }

@@ -7,7 +7,7 @@ def drawMapGrid (img, dots = [], annotates = []):
     OM_GROUND_LO = OM_GROUND[1:, 0]
     OM_GROUND_LA = OM_GROUND[1:, 1]
 
-    fig = plt.figure(figsize=(10,5))
+    fig = plt.figure(figsize=(20,10))
     plt.xlim(0, 360)
     plt.ylim(-90, 90)
     ax = fig.gca()
