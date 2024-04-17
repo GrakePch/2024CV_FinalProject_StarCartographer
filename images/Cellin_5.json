@@ -1,0 +1,15 @@
+{
+    "planetName": "Cellin",
+    "fovU": 112,
+    "distance": {
+        "plt": 448.2,
+        "om1": 593.7,
+        "om2": null,
+        "om3": 336.4,
+        "om4": null,
+        "om5": null,
+        "om6": 310.2
+    },
+    "useCenter": [1920, 1080],
+    "useRadius": 900
+}
