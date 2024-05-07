@@ -4,9 +4,13 @@ from matplotlib.patches import Circle
 import numpy as np
 import json
 
-def readImg(path, name):
+def readImg(path, name, metaName=None):
     img = mpimg.imread(path + name + ".png")
-    f = open(path + name + ".json")
+    if (img.shape[2] > 3):
+        img = img[:,:,:3]
+    if metaName is None:
+        metaName = name
+    f = open(path + metaName + ".json")
     imgMeta = json.load(f)
     dim = [0, 0]
     dim[1], dim[0], _ = img.shape
@@ -28,6 +32,13 @@ def showImgUseArea(img, imgMeta):
     plt.gca().add_patch(Circle(center, radius, color="red", fill=False))
     plt.show()
 
+def showImgWithPts(img, pts):
+    plt.figure()
+    plt.imshow(img)
+    plt.axis('off')  # Turn off axis
+    plt.scatter(pts[:,0], pts[:,1], color='red', s=5)
+    plt.show()
+
 def keepUsePixels(img, imgMeta):
     center = imgMeta["useCenter"]
     radius = imgMeta["useRadius"]
@@ -39,3 +50,6 @@ def keepUsePixels(img, imgMeta):
 
 def printMeta(imgMeta):
     print(json.dumps(imgMeta,sort_keys=True, indent=4))
+    
+def saveImg(img, path, name):
+    plt.imsave(path + name + '.png', img)
