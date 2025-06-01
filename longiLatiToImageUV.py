@@ -1,15 +1,15 @@
 import math
 import numpy as np
 
-def longiLatiToImageUV(radius, longitude, latitude, imgWidth, imgHeight, fovU, camPosition, camDirection, camUp):
+def longiLatiToImageUV(radius, longitude, latitude, imgWidth, imgHeight, fovU, camPosition, camDirection, camUp, dropEdgeAngle = 20):
     # Get XYZ positon @ longitude, latitude.
     ## Spherical coordinates -> rectangular coordinates
-    ### Longitude   0 at Y+. Go counter-clockwise:
-    ### Longitude  90 at X-;
-    ### Longitude 180 at Y-;
-    ### Longitude 270 at X+;
-    x = -radius * math.cos(math.radians(latitude)) * math.sin(math.radians(longitude))
-    y = radius * math.cos(math.radians(latitude)) * math.cos(math.radians(longitude))
+    ### Longitude   0 at X+. Go counter-clockwise:
+    ### Longitude  90 at Y+;
+    ### Longitude 180 at X-;
+    ### Longitude -90 at Y-;
+    x = radius * math.cos(math.radians(latitude)) * math.cos(math.radians(longitude))
+    y = radius * math.cos(math.radians(latitude)) * math.sin(math.radians(longitude))
     z = radius * math.sin(math.radians(latitude))
     P = np.array([x, y, z])
     
@@ -21,9 +21,12 @@ def longiLatiToImageUV(radius, longitude, latitude, imgWidth, imgHeight, fovU, c
     j = np.array(camUp)
     i = np.cross(camUp, camDirection) # camLeft
     OP = P - np.array(camPosition)
+    # Angle between -OP and P
+    cos_theta = np.dot(-OP, P) / (np.linalg.norm(OP) * np.linalg.norm(P))
     
     # check if OP pass through the sphere
-    if (np.dot(-OP, P) < 0): return None, None
+    if (cos_theta < math.pi/180*dropEdgeAngle): return None, None
+    
     
     # OP projected to k
     OP_k = OP / (np.dot(OP, k) / np.linalg.norm(k)) * f
