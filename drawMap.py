@@ -24,6 +24,11 @@ def drawMapGrid (img, dots = [], annotates = []):
         
     if dots:
         dots = np.array(dots)
+        # Filter out [None, None] elements
+        valid_mask = ~((dots[:,0] == None) | (dots[:,1] == None))
+        dots = dots[valid_mask]
+        if annotates:
+            annotates = [a for i, a in enumerate(annotates) if valid_mask[i]]
         plt.scatter(dots[:,0], dots[:,1], c="green", s=10)
         
         for i, txt in enumerate(annotates):
